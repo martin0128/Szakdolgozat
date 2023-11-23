@@ -1,8 +1,8 @@
 import {
   Autocomplete,
+  Box,
   Button,
   Card,
-  CardActions,
   CardContent,
   TextField,
 } from "@mui/material";
@@ -38,40 +38,59 @@ const PredictPage = (props: Props) => {
     <Card
       variant="outlined"
       style={{
-        height: "70%",
-        gap: 1,
-        display: "flex",
-        flexDirection: "column",
+        height: "90%",
         padding: "5rem",
       }}
     >
       <CardContent>
-        <Autocomplete
-          disablePortal
-          id="combo-box-demo"
-          onChange={(_, systemName) => {setSelectedSystem(systemName ?? "")}}
-          options={systems.map((system) => system.name)}
-          sx={{ width: 300 }}
-          renderInput={(params) => <TextField {...params} label="System" />}
-        />
-        {inputFields.map((label, index) => {
-          return (
-            <TextField
-              key={index}
-              type="number"
-              label={label}
-              inputRef={inputRefs[index]}
-            ></TextField>
-          );
-        })}
+        <Box>
+          <Box
+            sx={{
+              justifyContent: "center",
+              gap: 2,
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+            }}
+          >
+            <Autocomplete
+              disablePortal
+              id="combo-box-demo"
+              onChange={(_, systemName) => {
+                setSelectedSystem(systemName ?? "");
+              }}
+              sx={{ width: 300 }}
+              options={systems.map((system) => system.name)}
+              renderInput={(params) => <TextField {...params} label="System" />}
+            />
+            {inputFields.map((label, index) => {
+              return (
+                <TextField
+                  key={index}
+                  type="number"
+                  label={label}
+                  inputRef={inputRefs[index]}
+                  sx={{ width: 300 }}
+                ></TextField>
+              );
+            })}
+            {selectedSystem && (
+              <>
+                <Button
+                  variant="outlined"
+                  onClick={() =>
+                    onPredict(
+                      inputRefs.map((ref) => ref.current.value)
+                    )
+                  }
+                >
+                  Predict
+                </Button>
+              </>
+            )}
+          </Box>
+        </Box>
       </CardContent>
-      {selectedSystem && (
-        <CardActions>
-          <Button variant="outlined" onClick={()=>onPredict(inputRefs.map(ref => ref.current.value))}>
-            Predict
-          </Button>
-        </CardActions>
-      )}
     </Card>
   );
 };

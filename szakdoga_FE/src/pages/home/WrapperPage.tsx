@@ -8,10 +8,10 @@ const WrapperPage = () => {
   const [isPredictDone, setPredictIsDone] = useState(false);
   const [results, setResults] = useState(DefaultResponse);
 
-  const onPredict = async (params: number[]) => {
+  const onPredict = async (modelParams: number[]) => {
     const req: PredictRequest = {
       name: selectedSystem,
-      modelParams: params,
+      modelParams
     };
     setResults(await predict(req));
     setPredictIsDone(true);
