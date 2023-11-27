@@ -35,7 +35,7 @@ const ResultsPage = (props: Props) => {
           />
           <LineChart
             title="Predicted"
-            series={result.expected.map((ser) => {
+            series={result.predicted.map((ser) => {
               return {
                 data: ser,
                 showMark: false,
