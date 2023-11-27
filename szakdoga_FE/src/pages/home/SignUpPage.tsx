@@ -10,7 +10,8 @@ const Signup = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const onSubmit = async (e) => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const onSubmit = async (e: any) => {
     e.preventDefault();
 
     await createUserWithEmailAndPassword(auth, email, password)

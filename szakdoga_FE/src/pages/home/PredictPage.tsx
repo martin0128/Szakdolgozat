@@ -14,6 +14,7 @@ const PredictPage = (props: Props) => {
   const { setSelectedSystem, onPredict, selectedSystem, isLoading } = props;
 
   const [inputFields, setInputFields] = useState<string[]>([]);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [inputRefs, setInputRefs] = useState<RefObject<any>[]>([]);
 
   useEffect(() => {
@@ -24,6 +25,7 @@ const PredictPage = (props: Props) => {
       setInputFields([]);
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     setInputRefs((elRefs: any) =>
       Array(inputFields.length)
         .fill(0)
