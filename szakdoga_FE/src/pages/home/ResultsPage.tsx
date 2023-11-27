@@ -23,35 +23,25 @@ const ResultsPage = (props: Props) => {
         <Box sx={{ display: "flex" }}>
           <LineChart
             title="Expected"
-            series={[
-              {
-                data: result.expected[0],
+            series={result.expected.map((ser) => {
+              return {
+                data: ser,
                 showMark: false,
                 curve: "natural",
-              },
-              {
-                data: result.expected[1],
-                showMark: false,
-                curve: "natural",
-              },
-            ]}
+              };
+            })}
             width={window.innerWidth * 0.4}
             height={window.innerHeight * 0.6}
           />
           <LineChart
             title="Predicted"
-            series={[
-              {
-                data: result.predicted[0],
+            series={result.expected.map((ser) => {
+              return {
+                data: ser,
                 showMark: false,
                 curve: "natural",
-              },
-              {
-                data: result.predicted[1],
-                showMark: false,
-                curve: "natural",
-              },
-            ]}
+              };
+            })}
             width={window.innerWidth * 0.4}
             height={window.innerHeight * 0.6}
           />
