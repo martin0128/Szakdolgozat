@@ -12,7 +12,7 @@ type Props = {
 const ResultsPage = (props: Props) => {
   const { result, selectedSystem, back } = props;
   return (
-    <Page title={selectedSystem}>
+    <Page title={selectedSystem} r2Score={result.r2Score}>
       <Box
         sx={{
           display: "flex",
