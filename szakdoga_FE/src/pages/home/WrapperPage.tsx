@@ -19,13 +19,17 @@ const WrapperPage = () => {
     setIsloading(false);
     setPredictIsDone(true);
   };
+  const onBack = () => {
+    setPredictIsDone(false);
+    setSelectedSystem("");
+  }
   const updateSelectedSystem = (system: string) => setSelectedSystem(system);
 
   return isPredictDone ? (
     <ResultsPage
       result={results}
       selectedSystem={selectedSystem}
-      back={() => setPredictIsDone(false)}
+      back={onBack}
     />
   ) : (
     <PredictPage

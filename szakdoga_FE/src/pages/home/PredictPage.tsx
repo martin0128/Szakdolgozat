@@ -1,9 +1,4 @@
-import {
-  Autocomplete,
-  Box,
-  Button,
-  TextField,
-} from "@mui/material";
+import { Autocomplete, Box, Button, TextField } from "@mui/material";
 import systems from "../../configs/systemConfig";
 import { RefObject, createRef, useEffect, useState } from "react";
 import Loader from "../../components/Loader";
@@ -35,56 +30,57 @@ const PredictPage = (props: Props) => {
         .map((_, i) => elRefs[i] || createRef())
     );
   }, [inputFields.length, selectedSystem]);
-  return isLoading ? (
-    <Loader />
-  ) : (
-    <Page title="Predict">
-      <Box>
-        <Box
-          sx={{
-            justifyContent: "center",
-            gap: 2,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-          }}
-        >
-          <Autocomplete
-            disablePortal
-            id="combo-box-demo"
-            onChange={(_, systemName) => {
-              setSelectedSystem(systemName ?? "");
+  return (
+    <>
+      {isLoading && <Loader />}
+      <Page title="Predict">
+        <Box>
+          <Box
+            sx={{
+              justifyContent: "center",
+              gap: 2,
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
             }}
-            sx={{ width: 300 }}
-            options={systems.map((system) => system.name)}
-            renderInput={(params) => <TextField {...params} label="System" />}
-          />
-          {inputFields.map((label, index) => {
-            return (
-              <TextField
-                key={index}
-                type="number"
-                label={label}
-                inputRef={inputRefs[index]}
-                sx={{ width: 300 }}
-              ></TextField>
-            );
-          })}
-          {selectedSystem && (
-            <>
-              <Button
-                variant="contained"
-                onClick={() =>
-                  onPredict(inputRefs.map((ref) => ref.current.value))
-                }
-              >
-                Predict
-              </Button>
-            </>
-          )}
+          >
+            <Autocomplete
+              disablePortal
+              id="combo-box-demo"
+              onChange={(_, systemName) => {
+                setSelectedSystem(systemName ?? "");
+              }}
+              sx={{ width: 300 }}
+              options={systems.map((system) => system.name)}
+              renderInput={(params) => <TextField {...params} label="System" />}
+            />
+            {inputFields.map((label, index) => {
+              return (
+                <TextField
+                  key={index}
+                  type="number"
+                  label={label}
+                  inputRef={inputRefs[index]}
+                  sx={{ width: 300 }}
+                ></TextField>
+              );
+            })}
+            {selectedSystem && (
+              <>
+                <Button
+                  variant="contained"
+                  onClick={() =>
+                    onPredict(inputRefs.map((ref) => ref.current.value))
+                  }
+                >
+                  Predict
+                </Button>
+              </>
+            )}
+          </Box>
         </Box>
-      </Box>
-    </Page>
+      </Page>
+    </>
   );
 };
 

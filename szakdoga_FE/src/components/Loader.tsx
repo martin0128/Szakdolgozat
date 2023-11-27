@@ -13,7 +13,7 @@ const Loader = () => {
       width="100%"
       height="100%"
       zIndex="modal"
-      bgcolor="rgba(255, 255, 255,0.75)"
+      bgcolor="rgba(255, 255, 255,0.4)"
     >
       <CircularProgress />
     </Box>
