@@ -12,6 +12,14 @@ const systems: System[] = [
     name: "Inverted Pendulum",
     paramLabels: ["y", "z"],
   },
+  {
+    name: "SIRD",
+    paramLabels: ["x", "y", "z", "w"],
+  },
+  {
+    name: "Predator-Prey",
+    paramLabels: ["x", "y", "z", "w"],
+  },
 ];
 
 export default systems;
