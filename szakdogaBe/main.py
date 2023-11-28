@@ -5,6 +5,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from tensorflow import keras
 import numpy as np
 from scipy.integrate import solve_ivp
+from sklearn.metrics import r2_score
 import os
 
 class SystemRequest(BaseModel):
@@ -15,6 +16,7 @@ class SystemRequest(BaseModel):
 class SystemResponse(BaseModel):
     expected: list[list[float]] = []
     predicted: list[list[float]] = []
+    r2Score: float
 
 origins = [
     "http://localhost",
@@ -37,17 +39,17 @@ async def home() -> SystemRequest:
 @app.post('/predict/')
 async def predict(request: SystemRequest) -> SystemResponse:
     if(request.name == "Mass Spring Damper"):
-        expected, predicted = MSDPredict(request.modelParams)
+        expected, predicted, r2Score = MSDPredict(request.modelParams)
     elif(request.name == "Inverted Pendulum"):
-        expected, predicted = InvertedPredict(request.modelParams)
+        expected, predicted, r2Score = InvertedPredict(request.modelParams)
     elif(request.name == "SIRD"):
-        expected, predicted = SIRDPredict(request.modelParams)
+        expected, predicted, r2Score = SIRDPredict(request.modelParams)
     elif(request.name == "Predator-Prey"):
-        expected, predicted = PredatorPredict(request.modelParams)
+        expected, predicted, r2Score = PredatorPredict(request.modelParams)
     else:
         expected, predicted = []
             
-    return SystemResponse(expected=expected, predicted=predicted)
+    return SystemResponse(expected=expected, predicted=predicted, r2Score=r2Score)
 
 
 def MSDPredict(params):
@@ -81,7 +83,10 @@ def MSDPredict(params):
         predicted = np.append(predicted,prediction,axis=0)
 
     expected = sol.y
-    return (expected,[predicted[:,1], predicted[:,2]])
+    score = r2_score(position, predicted[:,1])
+    score2 = r2_score(speed, predicted[:,2])
+    realscore = (score + score2) / 2
+    return (expected,[predicted[:,1], predicted[:,2]], realscore)
 
 def InvertedPredict(params):
     model = keras.models.load_model("./Inverted")
@@ -117,7 +122,10 @@ def InvertedPredict(params):
         predicted = np.append(predicted,prediction,axis=0)
 
     expected = sol.y
-    return (expected,[predicted[:,1], predicted[:,2]])
+    score = r2_score(position, predicted[:,1])
+    score2 = r2_score(speed, predicted[:,2])
+    realscore = (score + score2) / 2
+    return (expected,[predicted[:,1], predicted[:,2]], realscore)
 
 def SIRDPredict(params):
     model = keras.models.load_model('./SIRDModel')
@@ -169,7 +177,12 @@ def SIRDPredict(params):
     predicted[:,4] = denormalizeData(predicted[:,4],decmin,decmax)
 
     expected = sol.y
-    return (expected,[predicted[:,1], predicted[:,2], predicted[:,3], predicted[:,4]])
+    score = r2_score(times, predicted[:,1])
+    score2 = r2_score(position, predicted[:,2])
+    score3 = r2_score(speed, predicted[:,3])
+    score4 = r2_score(l4, predicted[:,4])
+    realscore = (score + score2 +score3 +score4) /4
+    return (expected,[predicted[:,1], predicted[:,2], predicted[:,3], predicted[:,4]], realscore)
 
 def PredatorPredict(params):
     model = keras.models.load_model("./PredatorPrey")
@@ -206,7 +219,12 @@ def PredatorPredict(params):
     output[:,0] = denormalizeData(output[:,0], preymin, preymax)
     output[:,1] = denormalizeData(output[:,1], predmin, predmax)
     expected = [output[:,0], output[:,1]]
-    return (expected, [predicted[:,0], predicted[:,1]])
+
+    score = r2_score(output[:,0], predicted[:,0])
+    score2 = r2_score(output[:,1], predicted[:,1])
+    realscore = (score + score2) / 2
+
+    return (expected, [predicted[:,0], predicted[:,1]], realscore)
         
 
 def MassSpringDamper(t, y, a, b, c):
