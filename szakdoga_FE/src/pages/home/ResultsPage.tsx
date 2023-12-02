@@ -23,6 +23,7 @@ type Props = {
 const ResultsPage = (props: Props) => {
   const { result, selectedSystem, back } = props;
   const [isExpectedShown, setIsExpectedShown] = useState(true);
+
   return (
     <>
       <FormGroup>
@@ -56,7 +57,7 @@ const ResultsPage = (props: Props) => {
                   label: systems.filter((x) => x.name === selectedSystem)[0]
                     .lineNames[index],
                 }))}
-                width={window.innerWidth * 0.4}
+                width={isExpectedShown ? window.innerWidth * 0.4 : window.innerWidth * 0.8}
                 height={window.innerHeight * 0.6}
               />
             </Card>
