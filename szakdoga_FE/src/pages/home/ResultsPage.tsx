@@ -9,9 +9,10 @@ import {
   Typography,
 } from "@mui/material";
 import { Response } from "../../api/predict";
-import { LineChart } from "@mui/x-charts";
+import { LineChart } from "@mui/x-charts/LineChart";
 import Page from "../../components/Page";
 import { useState } from "react";
+import systems from "../../configs/systemConfig";
 
 type Props = {
   result: Response;
@@ -24,16 +25,16 @@ const ResultsPage = (props: Props) => {
   const [isExpectedShown, setIsExpectedShown] = useState(true);
   return (
     <>
-    <FormGroup>
-      <FormControlLabel
-        control={
-          <Switch
-            defaultChecked
-            onChange={(e) => setIsExpectedShown(e.target.checked)}
-          />
-        }
-        label="Show Expected"
-      />
+      <FormGroup>
+        <FormControlLabel
+          control={
+            <Switch
+              defaultChecked
+              onChange={(e) => setIsExpectedShown(e.target.checked)}
+            />
+          }
+          label="Show Expected"
+        />
       </FormGroup>
       <Page title={selectedSystem} r2Score={result.r2Score}>
         <Box
@@ -48,14 +49,13 @@ const ResultsPage = (props: Props) => {
               <Typography variant="h5">Predicted</Typography>
               <Divider />
               <LineChart
-                title="Predicted"
-                series={result.predicted.map((ser) => {
-                  return {
-                    data: ser,
-                    showMark: false,
-                    curve: "natural",
-                  };
-                })}
+                series={result.predicted.map((ser, index) => ({
+                  data: ser,
+                  showMark: false,
+                  curve: "natural",
+                  label: systems.filter((x) => x.name === selectedSystem)[0]
+                    .lineNames[index],
+                }))}
                 width={window.innerWidth * 0.4}
                 height={window.innerHeight * 0.6}
               />
@@ -65,14 +65,13 @@ const ResultsPage = (props: Props) => {
                 <Typography variant="h5">Expected</Typography>
                 <Divider />
                 <LineChart
-                  title="Expected"
-                  series={result.expected.map((ser) => {
-                    return {
-                      data: ser,
-                      showMark: false,
-                      curve: "natural",
-                    };
-                  })}
+                  series={result.expected.map((ser, index) => ({
+                    data: ser,
+                    showMark: false,
+                    label: systems.filter((x) => x.name === selectedSystem)[0]
+                      .lineNames[index],
+                    curve: "natural",
+                  }))}
                   width={window.innerWidth * 0.4}
                   height={window.innerHeight * 0.6}
                 />
