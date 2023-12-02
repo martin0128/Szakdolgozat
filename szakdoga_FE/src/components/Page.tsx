@@ -1,6 +1,7 @@
 import { Box, Card, Typography } from "@mui/material";
 import Divider from "@mui/material/Divider";
 import { roundTo } from "round-to";
+import { isNumber } from "util";
 type Props = {
   title: string;
   children?: React.ReactNode;
@@ -19,7 +20,7 @@ const Page: React.FC<Props> = ({ title, children, r2Score }) => {
         <Typography variant="h4" component="h2">
           {title}
         </Typography>
-        {r2Score && (
+        {(r2Score && isNumber(r2Score)) && (
           <Typography variant="h6" component="h6">
             R2_Score: {roundTo(r2Score, 2)}
           </Typography>
