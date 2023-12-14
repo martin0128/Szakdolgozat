@@ -3,6 +3,7 @@ import multiprocessing
 
 max_requests = 1000
 max_requests_jitter = 50
+timeout = 600
 
 log_file = "-"
 

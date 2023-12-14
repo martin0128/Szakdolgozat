@@ -16,4 +16,4 @@ export const DefaultResponse: Response = {
     r2Score: NaN,
 }
 
-export const predict = (request: PredictRequest) => axios.post<Response>('http://localhost:8000/predict',request).then(res => res.data);
+export const predict = (request: PredictRequest) => axios.post<Response>('https://szakdogabe-gizqhebctq-ew.a.run.app/predict/',request).then(res => res.data);

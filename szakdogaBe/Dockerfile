@@ -6,7 +6,7 @@ WORKDIR /code
 
 COPY requirements.txt .
 
-RUN pip install -r requirements.txt
+RUN pip install tensorflow uvicorn gunicorn fastapi scikit-learn numpy scipy
 
 COPY . .
 

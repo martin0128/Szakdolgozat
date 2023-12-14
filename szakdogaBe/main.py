@@ -18,10 +18,7 @@ class SystemResponse(BaseModel):
     predicted: list[list[float]] = []
     r2Score: float
 
-origins = [
-    "http://localhost",
-    "http://localhost:5173",
-]
+origins = ["*"]
 
 app = FastAPI(title='szakdoga')
 
@@ -30,6 +27,7 @@ app.add_middleware(
     allow_origins=origins,
     allow_credentials=True,
     allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 @app.get('/')

@@ -18,10 +18,12 @@ const systems: System[] = [
   {
     name: "SIRD",
     paramLabels: ["x", "y", "z", "w"],
+    lineNames: ["Susceptible", "Infected", "Recovered", "Deceased"],
   },
   {
     name: "Predator-Prey",
     paramLabels: ["x", "y", "z", "w"],
+    lineNames: ["Prey", "Predator"],
   },
 ];
 
